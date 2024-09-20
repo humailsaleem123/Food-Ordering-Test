@@ -40,7 +40,7 @@ export default function CardComponent({
       {categories &&
         categories.map((category, index) => (
           <React.Fragment key={index}>
-            <Chip label={category} icon="pi pi-apple" />
+            <Chip label={category} />
           </React.Fragment>
         ))}
     </div>
@@ -53,7 +53,7 @@ export default function CardComponent({
         subTitle={categoriesChip}
         // header={header}
         footer={footer}
-        className="w-[15rem] md:w-[20rem] h-[17rem] md:h-[15rem] flex flex-col justify-between"
+        className="w-[15rem] md:w-[20rem] h-[17rem] md:h-[15rem] flex flex-col justify-between rounded-xl hover:bg-zinc-200 hover:scale-105 transition-all"
         id={placeId}
       >
         <div className="flex justify-center items-center gap-2">

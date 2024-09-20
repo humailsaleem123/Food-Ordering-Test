@@ -3,18 +3,14 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 import React, { useRef, useEffect, useState, useMemo, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCurrentLocation,
-  setMapMarker,
-  isMapLoaded,
-} from "@/reduxStore/slices/mapSlice";
+import { isMapLoaded } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";
 
 const libraries: any = ["places", "marker", "geometry", "maps3d", "drawing"];
 
 const GoogleMapLoader = ({ Google_Map_Key }: any) => {
-  const { googleMapRef, mapInstanceRef, toastRef, is3d } =
+  const { googleMapRef, mapInstanceRef, toastRef } =
     useContext(GoogleMapContext);
   const dispatch = useDispatch();
   const mapState = useSelector((state: any) => state.map);
@@ -64,15 +60,6 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
       dispatch(isMapLoaded(isLoaded));
     }
   }, [isLoaded, currentPosition]);
-
-  // Effect to handle the 3D view based on is3d state
-  useEffect(() => {
-    if (mapInstanceRef.current) {
-      if (is3d) {
-      } else {
-      }
-    }
-  }, [is3d]);
 
   if (loadError) {
     return <div>Error loading Google Maps</div>;

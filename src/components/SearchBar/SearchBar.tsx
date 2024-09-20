@@ -7,6 +7,7 @@ import { InputIcon } from "primereact/inputicon";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";
 import { IconField } from "primereact/iconfield";
+import { Tooltip } from "primereact/tooltip";
 
 function SearchBar() {
   const {
@@ -38,9 +39,15 @@ function SearchBar() {
             panelClassName="w-full md:w-[39rem]"
           />
           <InputIcon
-            className="pi pi-bullseye text-lime-400 cursor-pointer hover:text-lime-600 right-[7rem] xl:right-[10rem]"
+            className="pi pi-thumbtack text-lime-500 cursor-pointer hover:text-lime-700 right-[7rem] xl:right-[10rem]"
             onClick={handleBullseyeClick}
-          ></InputIcon>
+          >
+            <Tooltip
+              position="top"
+              target=".pi-thumbtack"
+              content="Share Location"
+            />
+          </InputIcon>
           {dropdownValue != "" ? (
             <InputIcon
               className="pi pi-times text-zinc-400 hover:text-zinc-600 cursor-pointer right-[5rem] xl:right-[8rem]"

@@ -34,7 +34,6 @@ export function GoogleMapProvider({ children }: any) {
     instanceId: "",
   });
   const [animationLoader, setAnimationLoader] = useState(false);
-  const [is3d, setIs3d] = useState<boolean>(false);
   const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
     lng: number;
@@ -330,10 +329,6 @@ export function GoogleMapProvider({ children }: any) {
       }
     };
 
-  const handleChecked3D = (event: CheckboxChangeEvent) => {
-    setIs3d(event.checked as any);
-  };
-
   return (
     <GoogleMapContext.Provider
       value={{
@@ -351,8 +346,6 @@ export function GoogleMapProvider({ children }: any) {
         handleClickShowMap,
         animationLoader,
         setAnimationLoader,
-        is3d,
-        handleChecked3D,
       }}
     >
       <Toast ref={toastRef} />

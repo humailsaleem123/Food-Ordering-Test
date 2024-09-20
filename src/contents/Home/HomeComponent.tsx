@@ -8,11 +8,9 @@ import locationImage from "@/public/assets/gifs/location.gif";
 import RestaurantLists from "./RestaurantComponent/RestaurantLists";
 import Loader from "@/components/Loader/Loader";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
-import CheckboxComponent from "@/components/Fields/CheckboxComponent";
-import { CheckboxChangeEvent } from "primereact/checkbox";
 
 function HomeComponent() {
-  const { loadingState, handleChecked3D, is3d } = useContext(GoogleMapContext);
+  const { loadingState } = useContext(GoogleMapContext);
   const googleMapKey = "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E";
 
   return (
@@ -27,12 +25,6 @@ function HomeComponent() {
       <GoogleMapLoader Google_Map_Key={googleMapKey}></GoogleMapLoader>
       <div className="absolute top-[30rem] flex justify-center items-center z-[100] w-full xl:w-[70rem] p-3 xl:p-0">
         <SearchBar />
-      </div>
-      <div className="absolute top-[10rem] right-5 z-[100] flex justify-end items-center w-full p-3 xl:p-0">
-        <div className="bg-white shadow-lg rounded-lg p-4 flex items-center">
-          <CheckboxComponent handleChange={handleChecked3D} checked={is3d} />
-          <p className="text-md ml-2">is 3d View</p>
-        </div>
       </div>
 
       <RestaurantLists />
