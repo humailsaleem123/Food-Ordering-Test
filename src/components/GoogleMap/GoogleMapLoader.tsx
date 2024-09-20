@@ -9,11 +9,12 @@ import {
   isMapLoaded,
 } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
+import Loader from "../Loader/Loader";
 
-const libraries: any = ["places", "marker"];
+const libraries: any = ["places", "marker", "geometry", "maps3d", "drawing"];
 
 const GoogleMapLoader = ({ Google_Map_Key }: any) => {
-  const { googleMapRef, mapInstanceRef, toastRef } =
+  const { googleMapRef, mapInstanceRef, toastRef, is3d } =
     useContext(GoogleMapContext);
   const dispatch = useDispatch();
   const mapState = useSelector((state: any) => state.map);
@@ -64,6 +65,15 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
     }
   }, [isLoaded, currentPosition]);
 
+  // Effect to handle the 3D view based on is3d state
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      if (is3d) {
+      } else {
+      }
+    }
+  }, [is3d]);
+
   if (loadError) {
     return <div>Error loading Google Maps</div>;
   }
@@ -71,7 +81,13 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
   return isLoaded ? (
     <div ref={googleMapRef} style={{ width: "100%", height: "700px" }} />
   ) : (
-    <div>Loading Google Maps...</div>
+    <Loader
+      classes="fixed inset-0 z-[9999] flex items-center justify-center bg-white bg-opacity-70 backdrop-filter backdrop-blur-sm"
+      isShow={true}
+      instanceId="1"
+      loaderId="1"
+      loadingText="Loading Google Maps, Please Wait.."
+    />
   );
 };
 

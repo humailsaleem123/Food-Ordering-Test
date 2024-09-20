@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Rating } from "primereact/rating";
 import { Badge } from "primereact/badge";
 import { Chip } from "primereact/chip";
 import Image from "next/image";
+import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 
 export default function CardComponent({
   title,
@@ -14,7 +15,10 @@ export default function CardComponent({
   placeId,
   categories,
   userRating,
+  position,
 }: CardsComponentProps) {
+  const { handleClickShowMap } = useContext(GoogleMapContext);
+
   const header = (
     <div className="w-max p-2">
       <Image alt="icon" src={icon} width={20} height={20} />
@@ -27,6 +31,7 @@ export default function CardComponent({
       label="Show On Map"
       severity="success"
       raised
+      onClick={handleClickShowMap(position)}
     />
   );
 
@@ -48,7 +53,7 @@ export default function CardComponent({
         subTitle={categoriesChip}
         // header={header}
         footer={footer}
-        className="w-[15rem] md:w-[20rem] h-[15rem] flex flex-col justify-between"
+        className="w-[15rem] md:w-[20rem] h-[17rem] md:h-[15rem] flex flex-col justify-between"
         id={placeId}
       >
         <div className="flex justify-center items-center gap-2">
@@ -68,4 +73,5 @@ interface CardsComponentProps {
   placeId: string;
   categories: string[];
   userRating: number;
+  position: { lat: number; lng: number };
 }

@@ -29,12 +29,6 @@ export default function AppBar() {
       label: "Features",
       icon: "pi pi-star",
     },
-    {
-      label: "Contact",
-      icon: "pi pi-envelope",
-      badge: 3,
-      template: itemRenderer,
-    },
   ];
 
   const start = (
@@ -49,7 +43,8 @@ export default function AppBar() {
   const end = (
     <div className="flex align-items-center gap-2">
       <Button
-        className="w-20 p-2 text-white bg-green-500 hover:bg-green-600"
+        icon="pi pi-sign-in"
+        className="w-auto p-2 text-white bg-green-500 hover:bg-green-600"
         label="Login"
         severity="success"
         raised
@@ -59,7 +54,7 @@ export default function AppBar() {
 
   return (
     <div className="card">
-      <Menubar model={items} start={start} end={end} />
+      <Menubar start={start} end={end} />
     </div>
   );
 }

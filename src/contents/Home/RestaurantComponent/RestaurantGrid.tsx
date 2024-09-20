@@ -34,6 +34,7 @@ function RestaurantGrid() {
           rating={restaurant.rating}
           userRating={restaurant.user_ratings_total}
           categories={restaurant.type.slice(0, 2)}
+          position={restaurant.position}
         />
       ))}
     </div>
@@ -46,8 +47,9 @@ function RestaurantGrid() {
           {/* Tab Buttons */}
           <div className="flex justify-center items-center flex-wrap md:space-x-4 space-y-4 md:space-y-0 mb-6">
             <Button
+              icon="pi pi-star-fill"
               label="Top Rated Restaurants"
-              className={`w-60 p-2 ${
+              className={`w-auto p-2 ${
                 activeTab === "topRated"
                   ? "bg-green-600 text-white"
                   : "bg-gray-200 text-gray-700"
@@ -56,8 +58,9 @@ function RestaurantGrid() {
               severity="success"
             />
             <Button
+              icon="pi pi-star-half-fill"
               label="Other Restaurants"
-              className={`w-60 p-2 ${
+              className={`w-auto p-2 ${
                 activeTab === "remaining"
                   ? "bg-green-600 text-white"
                   : "bg-gray-200 text-gray-700"
@@ -71,14 +74,14 @@ function RestaurantGrid() {
           {activeTab === "topRated" ? (
             <React.Fragment>
               <h4 className="text-3xl text-center mb-5 underline decoration-solid underline-offset-[0.8rem] decoration-green-600">
-                Top Rated Restaurants
+                Top Rated Restaurants ({topRatedRestaurants.length})
               </h4>
               {renderRestaurantGrid(topRatedRestaurants)}
             </React.Fragment>
           ) : (
             <React.Fragment>
               <h4 className="text-3xl text-center mb-5 underline decoration-solid underline-offset-[0.8rem] decoration-green-600">
-                Other Restaurants
+                Other Restaurants ({remainingRestaurants.length})
               </h4>
               {renderRestaurantGrid(remainingRestaurants)}
             </React.Fragment>
@@ -99,5 +102,5 @@ interface RestaurantsItemProps {
   place_id: string;
   type: string[];
   user_ratings_total: number;
-  position: any;
+  position: { lat: number; lng: number };
 }

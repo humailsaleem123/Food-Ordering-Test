@@ -10,8 +10,11 @@ import {
 } from "primereact/autocomplete";
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import markerIcon from "../public/assets/images/marker.png";
 import { Toast } from "primereact/toast";
+import { createRestaurantMarker } from "@/components/GoogleMap/Markers/RestaurantMarker";
+import { createUserMarker } from "@/components/GoogleMap/Markers/UserMarker";
+import { MoveCameraAnimation } from "@/components/GoogleMap/MoveCameraAnimation";
+import { CheckboxChangeEvent } from "primereact/checkbox";
 
 export const GoogleMapContext = createContext<any | null>(null);
 let autocompleteService: google.maps.places.AutocompleteService | null = null;
@@ -22,12 +25,16 @@ export function GoogleMapProvider({ children }: any) {
   const placesServiceRef = useRef<google.maps.places.PlacesService | null>(
     null
   );
+  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+
   const toastRef = useRef<Toast>(null);
 
   const [loadingState, setIsLoadingState] = useState<any>({
     isLoading: false,
     instanceId: "",
   });
+  const [animationLoader, setAnimationLoader] = useState(false);
+  const [is3d, setIs3d] = useState<boolean>(false);
   const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
     lng: number;
@@ -104,14 +111,24 @@ export function GoogleMapProvider({ children }: any) {
     const { latitude, longitude, heading } = userInput;
     if (latitude && longitude) {
       const latLng = { lat: latitude, lng: longitude };
-      new google.maps.marker.AdvancedMarkerElement({
-        position: latLng,
-        map: mapInstanceRef.current,
-        title: heading,
-      });
 
-      mapInstanceRef.current?.setCenter(latLng);
-      mapInstanceRef.current?.setZoom(14);
+      createUserMarker(heading, latLng, mapInstanceRef.current as any);
+      const targetLatLng = new google.maps.LatLng(latitude, longitude);
+
+      const cameraOptions = {
+        tilt: 0,
+        heading: 0,
+        zoom: 6,
+        center: latLng,
+      };
+      MoveCameraAnimation(
+        cameraOptions,
+        targetLatLng,
+        mapInstanceRef.current as any,
+        12
+      );
+
+      dispatch(setCurrentLocation(latLng));
     }
 
     dispatch(handleChangeDropDown(userInput));
@@ -151,19 +168,32 @@ export function GoogleMapProvider({ children }: any) {
                   };
 
                   dispatch(handleChangeDropDown(locationData));
-                  // Add a marker & Navigate
 
-                  const customIcon = document.createElement("img");
-                  customIcon.src = markerIcon.src;
-                  new google.maps.marker.AdvancedMarkerElement({
-                    position: latLng,
-                    map: mapInstanceRef.current,
-                    title: heading,
-                    content: customIcon,
-                  });
+                  createUserMarker(
+                    heading,
+                    latLng,
+                    mapInstanceRef.current as any
+                  );
+                  const targetLatLng = new google.maps.LatLng(
+                    latitude,
+                    longitude
+                  );
 
-                  mapInstanceRef.current?.setCenter(latLng);
-                  mapInstanceRef.current?.setZoom(14);
+                  const cameraOptions = {
+                    tilt: 0,
+                    heading: 0,
+                    zoom: 10,
+                    center: latLng,
+                  };
+                  MoveCameraAnimation(
+                    cameraOptions,
+                    targetLatLng,
+                    mapInstanceRef.current as any,
+                    14
+                  );
+
+                  // mapInstanceRef.current?.panTo(latLng);
+                  // mapInstanceRef.current?.setZoom(14);
                 } else {
                   console.error("Geocoding failed: ", status);
                 }
@@ -200,10 +230,10 @@ export function GoogleMapProvider({ children }: any) {
         instanceId: "2",
       });
       if (placesServiceRef.current && currentLocation) {
-        const request: any = {
+        const request: google.maps.places.PlaceSearchRequest = {
           location: currentLocation,
           radius: restaurantRadius,
-          type: ["restaurant"],
+          type: "restaurant",
         };
 
         const restaurants: any[] = [];
@@ -216,33 +246,12 @@ export function GoogleMapProvider({ children }: any) {
                 lng: place.geometry.location.lng(),
               };
 
-              // Create a div to hold the icon
-              const customIconContainer = document.createElement("div");
-              customIconContainer.style.backgroundColor = "#ffffff";
-              customIconContainer.style.borderRadius = "50% 50% 50% 0";
-              customIconContainer.style.boxShadow =
-                "box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)";
-              customIconContainer.style.padding = "5px";
-              customIconContainer.style.display = "flex";
-              customIconContainer.style.justifyContent = "center";
-              customIconContainer.style.alignItems = "center";
+              const marker = createRestaurantMarker(
+                place,
+                mapInstanceRef.current as any
+              );
 
-              const customIcon = document.createElement("img");
-              customIcon.src = place.icon;
-              customIcon.style.borderRadius = "15px";
-              customIcon.style.backgroundColor = place.icon_background_color;
-              customIcon.style.width = "30px";
-              customIcon.style.height = "30px";
-              customIcon.style.padding = "5px";
-
-              customIconContainer.appendChild(customIcon);
-
-              new google.maps.marker.AdvancedMarkerElement({
-                position: placeLatLng,
-                map: mapInstanceRef.current,
-                title: place.name,
-                content: customIconContainer,
-              });
+              markersRef.current.push(marker);
 
               const obj = {
                 title: place.name,
@@ -258,6 +267,11 @@ export function GoogleMapProvider({ children }: any) {
             });
             dispatch(setRestaurants(restaurants));
           } else {
+            toastRef.current?.show({
+              severity: "error",
+              summary: "Error",
+              detail: `Failed to find restaurants: ${status}`,
+            });
             console.error("Failed to find restaurants:", status);
           }
         });
@@ -291,6 +305,35 @@ export function GoogleMapProvider({ children }: any) {
   const clearDropDown = () => {
     dispatch(handleChangeDropDown(""));
   };
+
+  const handleClickShowMap =
+    (position: { lat: number; lng: number }) =>
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      mapInstanceRef.current?.setCenter(position);
+      mapInstanceRef.current?.setZoom(22);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const targetMarker = markersRef.current.find(
+        (marker) =>
+          marker.position?.lat === position.lat &&
+          marker.position?.lng === position.lng
+      );
+
+      if (targetMarker && targetMarker.element) {
+        targetMarker.element.classList.add("animate-bounce");
+
+        setTimeout(() => {
+          targetMarker.element.classList.remove("animate-bounce");
+        }, 5000);
+      } else {
+        console.log("Marker not found for the given position.");
+      }
+    };
+
+  const handleChecked3D = (event: CheckboxChangeEvent) => {
+    setIs3d(event.checked as any);
+  };
+
   return (
     <GoogleMapContext.Provider
       value={{
@@ -305,6 +348,11 @@ export function GoogleMapProvider({ children }: any) {
         loadingState,
         findRestaurantsNearBy,
         toastRef,
+        handleClickShowMap,
+        animationLoader,
+        setAnimationLoader,
+        is3d,
+        handleChecked3D,
       }}
     >
       <Toast ref={toastRef} />

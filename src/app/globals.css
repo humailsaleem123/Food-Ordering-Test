@@ -2,11 +2,21 @@
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("./fonts/poppins/Poppins-Medium.ttf");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: Poppins-Medium !important;
+}
+
 :root {
+  font-family: Poppins-Medium !important;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -17,15 +27,14 @@
     --foreground: #ededed;
   }
 }
-
-/* body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
-/* @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-} */
+.p-button,
+.p-inputtext,
+.p-datatable,
+.p-dialog,
+.p-dropdown,
+.p-component {
+  font-family: Poppins-Medium !important;
+}
+.loader-hidden {
+  display: none;
+}
