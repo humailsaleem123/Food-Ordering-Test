@@ -10,15 +10,18 @@ import {
 } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 
+const libraries: any = ["places", "marker"];
+
 const GoogleMapLoader = ({ Google_Map_Key }: any) => {
-  const { googleMapRef, mapInstanceRef } = useContext(GoogleMapContext);
+  const { googleMapRef, mapInstanceRef, toastRef } =
+    useContext(GoogleMapContext);
   const dispatch = useDispatch();
   const mapState = useSelector((state: any) => state.map);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: Google_Map_Key,
-    libraries: ["places"],
+    libraries,
   });
 
   const [currentPosition, setCurrentPosition] = useState<{
@@ -36,6 +39,11 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
         },
         (error) => {
           console.error("Error fetching current location:", error);
+          toastRef.current?.show({
+            severity: "error",
+            summary: "Error",
+            detail: `${error.message}`,
+          });
           setCurrentPosition({ lat: 40.73061, lng: -73.935242 });
         }
       );
@@ -49,6 +57,7 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
       mapInstanceRef.current = new google.maps.Map(googleMapRef.current, {
         center: currentPosition,
         zoom: 10,
+        mapId: "c3464801a908d4eb",
       });
 
       dispatch(isMapLoaded(isLoaded));
@@ -60,7 +69,7 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
   }
 
   return isLoaded ? (
-    <div ref={googleMapRef} style={{ width: "100%", height: "500px" }} />
+    <div ref={googleMapRef} style={{ width: "100%", height: "700px" }} />
   ) : (
     <div>Loading Google Maps...</div>
   );

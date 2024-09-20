@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoaded: false,
   currentLocation: null,
+  restaurantRadius: "1500",
   marker: null,
 };
 

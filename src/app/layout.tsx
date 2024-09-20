@@ -6,6 +6,7 @@ import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { makeStore } from "@/reduxStore/store";
 import { GoogleMapProvider } from "@/contexts/GoogleMapContext";
+import AppBar from "@/components/Layouts/appBar";
 
 export default function RootLayout({
   children,
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <ReduxProvider store={makeStore}>
           <GoogleMapProvider>
+            <AppBar />
             <PrimeReactProvider>{children}</PrimeReactProvider>
           </GoogleMapProvider>
         </ReduxProvider>

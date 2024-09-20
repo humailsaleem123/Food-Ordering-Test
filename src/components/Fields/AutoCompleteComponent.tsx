@@ -31,7 +31,7 @@ function AutoCompleteComponent({
         inputClassName={inputClasses}
         emptyMessage="No Options Available"
         showEmptyMessage={true}
-        loadingIcon={<i className="pi pi-spinner-dotted"></i>}
+        loadingIcon={<i className="pi pi-spinner-dotted mt-1"></i>}
         panelClassName={panelClassName}
       />
     </React.Fragment>
