@@ -13,7 +13,7 @@ function SearchBar() {
   const {
     completeMethod,
     handleChangeAutoComplete,
-    handleBullseyeClick,
+    handlePinLocationClick,
     clearDropDown,
     loadingState,
     findRestaurantsNearBy,
@@ -31,6 +31,7 @@ function SearchBar() {
             value={dropdownValue?.value || dropdownValue}
             items={locations}
             field="search"
+            name="search"
             completeMethod={completeMethod}
             handleChange={handleChangeAutoComplete}
             classes="w-full xl:w-[40rem] p-3 bg-white rounded-lg shadow-lg"
@@ -40,7 +41,7 @@ function SearchBar() {
           />
           <InputIcon
             className="pi pi-thumbtack text-lime-500 cursor-pointer hover:text-lime-700 right-[7rem] xl:right-[10rem]"
-            onClick={handleBullseyeClick}
+            onClick={handlePinLocationClick}
           >
             <Tooltip
               position="top"

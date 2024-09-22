@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 function RestaurantLists() {
   const placeState = useSelector((state: any) => state.PlaceSlice);
   const { restaurants } = placeState;
-  console.log("restaurants", restaurants);
   return (
     <React.Fragment>
       {restaurants.length != 0 && (

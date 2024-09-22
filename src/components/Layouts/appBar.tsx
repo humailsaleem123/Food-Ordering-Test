@@ -6,6 +6,7 @@ import { Badge } from "primereact/badge";
 import { Avatar } from "primereact/avatar";
 import Image from "next/image";
 import { Button } from "primereact/button";
+import Logo from "@/public/assets/images/spotDeliveryCover.png";
 
 export default function AppBar() {
   const itemRenderer = (item: any) => (
@@ -35,9 +36,11 @@ export default function AppBar() {
     <Image
       alt="logo"
       className="mr-2"
-      src="https://primefaces.org/cdn/primereact/images/logo.png"
-      width={40}
-      height={40}
+      src={Logo.src}
+      width={120}
+      height={100}
+      style={{ width: 120, height: "auto" }}
+      priority
     />
   );
   const end = (

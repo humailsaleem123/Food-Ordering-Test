@@ -1,23 +1,24 @@
 "use client";
 
 import { useJsApiLoader } from "@react-google-maps/api";
-import React, { useRef, useEffect, useState, useMemo, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isMapLoaded } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";
 
-const libraries: any = ["places", "marker", "geometry", "maps3d", "drawing"];
-
-const GoogleMapLoader = ({ Google_Map_Key }: any) => {
+const GoogleMapLoader = ({
+  GoogleMapKey,
+  GoogleMapId,
+  libraries,
+}: GoogleMapLoaderProps) => {
   const { googleMapRef, mapInstanceRef, toastRef } =
     useContext(GoogleMapContext);
   const dispatch = useDispatch();
-  const mapState = useSelector((state: any) => state.map);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: Google_Map_Key,
+    googleMapsApiKey: GoogleMapKey,
     libraries,
   });
 
@@ -54,7 +55,7 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
       mapInstanceRef.current = new google.maps.Map(googleMapRef.current, {
         center: currentPosition,
         zoom: 10,
-        mapId: "c3464801a908d4eb",
+        mapId: GoogleMapId,
       });
 
       dispatch(isMapLoaded(isLoaded));
@@ -79,3 +80,9 @@ const GoogleMapLoader = ({ Google_Map_Key }: any) => {
 };
 
 export default GoogleMapLoader;
+
+interface GoogleMapLoaderProps {
+  GoogleMapKey: string;
+  libraries: any;
+  GoogleMapId: string;
+}

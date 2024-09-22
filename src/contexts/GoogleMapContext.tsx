@@ -14,7 +14,6 @@ import { Toast } from "primereact/toast";
 import { createRestaurantMarker } from "@/components/GoogleMap/Markers/RestaurantMarker";
 import { createUserMarker } from "@/components/GoogleMap/Markers/UserMarker";
 import { MoveCameraAnimation } from "@/components/GoogleMap/MoveCameraAnimation";
-import { CheckboxChangeEvent } from "primereact/checkbox";
 
 export const GoogleMapContext = createContext<any | null>(null);
 let autocompleteService: google.maps.places.AutocompleteService | null = null;
@@ -34,10 +33,7 @@ export function GoogleMapProvider({ children }: any) {
     instanceId: "",
   });
   const [animationLoader, setAnimationLoader] = useState(false);
-  const [currentPosition, setCurrentPosition] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+
   const dispatch = useDispatch();
   const formStore = useSelector((state: any) => state.CreateSlice);
   const mapState = useSelector((state: any) => state.Map);
@@ -133,7 +129,7 @@ export function GoogleMapProvider({ children }: any) {
     dispatch(handleChangeDropDown(userInput));
   };
 
-  const handleBullseyeClick = () => {
+  const handlePinLocationClick = () => {
     try {
       setIsLoadingState({
         isLoading: true,
@@ -334,11 +330,9 @@ export function GoogleMapProvider({ children }: any) {
       value={{
         googleMapRef,
         mapInstanceRef,
-        currentPosition,
-        setCurrentPosition,
         completeMethod,
         handleChangeAutoComplete,
-        handleBullseyeClick,
+        handlePinLocationClick,
         clearDropDown,
         loadingState,
         findRestaurantsNearBy,

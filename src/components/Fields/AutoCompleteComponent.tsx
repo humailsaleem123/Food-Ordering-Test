@@ -9,6 +9,7 @@ function AutoCompleteComponent({
   value,
   items,
   field,
+  name,
   completeMethod,
   handleChange,
   classes,
@@ -20,6 +21,7 @@ function AutoCompleteComponent({
     <React.Fragment>
       <AutoComplete
         field={field}
+        name={name}
         value={value}
         suggestions={items}
         completeMethod={completeMethod}
@@ -44,6 +46,7 @@ interface AutoCompleteComponentProps {
   value: string;
   items: { label: string; placeId: string }[];
   field: string;
+  name: string;
   completeMethod: (e: AutoCompleteCompleteEvent) => void;
   handleChange: (e: AutoCompleteChangeEvent) => void;
   classes?: string;

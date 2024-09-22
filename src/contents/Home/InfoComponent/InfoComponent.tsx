@@ -20,13 +20,25 @@ function InfoComponent({
               <p>{description}</p>
             </div>
             <div>
-              <Image alt={alt} width={width} height={height} src={img} />
+              <Image
+                alt={alt}
+                width={width}
+                height={height}
+                src={img}
+                priority
+              />
             </div>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <div>
-              <Image alt={alt} width={width} height={height} src={img} />
+              <Image
+                alt={alt}
+                width={width}
+                height={height}
+                src={img}
+                priority
+              />
             </div>
             <div className="w-full xl:w-[50rem]">
               <h4 className="text-4xl mb-4">{title}</h4>
