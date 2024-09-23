@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import GoogleMapLoader from "@/components/GoogleMap/GoogleMap";
 import InfoComponent from "./InfoComponent/InfoComponent";

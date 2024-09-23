@@ -11,19 +11,12 @@ export default function CardComponent({
   title,
   rating,
   icon,
-  iconColor,
   placeId,
   categories,
   userRating,
   position,
 }: CardsComponentProps) {
   const { handleClickShowMap } = useContext(GoogleMapContext);
-
-  const header = (
-    <div className="w-max p-2">
-      <Image alt="icon" src={icon} width={20} height={20} />
-    </div>
-  );
 
   const footer = (
     <Button
@@ -51,7 +44,6 @@ export default function CardComponent({
       <Card
         title={<div className="truncate w-full">{title}</div>}
         subTitle={categoriesChip}
-        // header={header}
         footer={footer}
         className="w-[15rem] md:w-[20rem] h-[17rem] md:h-[15rem] flex flex-col justify-between rounded-xl hover:bg-zinc-200 hover:scale-105 transition-all"
         id={placeId}

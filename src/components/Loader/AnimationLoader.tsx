@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext } from "react";
+import React, { CSSProperties } from "react";
 import HashLoader from "react-spinners/HashLoader";
 
 function AnimationLoader() {

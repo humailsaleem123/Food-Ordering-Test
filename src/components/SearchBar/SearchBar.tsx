@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import { Button } from "primereact/button";
 import AutoCompleteComponent from "../Fields/AutoCompleteComponent";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { InputIcon } from "primereact/inputicon";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";

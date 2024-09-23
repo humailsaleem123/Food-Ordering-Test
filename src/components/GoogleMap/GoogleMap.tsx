@@ -2,7 +2,7 @@
 
 import { useJsApiLoader } from "@react-google-maps/api";
 import React, { useEffect, useState, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isMapLoaded } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";
