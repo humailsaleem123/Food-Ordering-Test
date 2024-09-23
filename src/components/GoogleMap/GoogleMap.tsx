@@ -7,10 +7,11 @@ import { isMapLoaded } from "@/reduxStore/slices/mapSlice";
 import { GoogleMapContext } from "@/contexts/GoogleMapContext";
 import Loader from "../Loader/Loader";
 
+const libraries: any = ["places", "marker", "geometry", "maps3d", "drawing"];
+
 const GoogleMapLoader = ({
   GoogleMapKey,
   GoogleMapId,
-  libraries,
 }: GoogleMapLoaderProps) => {
   const { googleMapRef, mapInstanceRef, toastRef } =
     useContext(GoogleMapContext);
@@ -83,6 +84,5 @@ export default GoogleMapLoader;
 
 interface GoogleMapLoaderProps {
   GoogleMapKey: string;
-  libraries: any;
   GoogleMapId: string;
 }

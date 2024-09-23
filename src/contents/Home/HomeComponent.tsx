@@ -13,8 +13,6 @@ function HomeComponent() {
   const { loadingState } = useContext(GoogleMapContext);
   const googleMapKey: any | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY;
   const googleMapId: any | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAP_ID;
-  const googleMapLibraries: any | undefined =
-    process.env.NEXT_PUBLIC_GOOGLE_MAP_LIBRARIES;
 
   return (
     <div className="relative">
@@ -28,7 +26,6 @@ function HomeComponent() {
       <GoogleMapLoader
         GoogleMapKey={googleMapKey}
         GoogleMapId={googleMapId}
-        libraries={googleMapLibraries.split(",")}
       ></GoogleMapLoader>
       <div className="absolute top-[30rem] flex justify-center items-center z-[100] w-full xl:w-[70rem] p-3 xl:p-0">
         <SearchBar />
